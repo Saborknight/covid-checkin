@@ -1,5 +1,8 @@
 <template>
-  <Tutorial />
+  <div>
+    <checkin-form />
+    <results />
+  </div>
 </template>
 
 <script>
