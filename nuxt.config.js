@@ -5,7 +5,7 @@ export default {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
+      { hid: 'description', name: 'description', content: 'Where Covid gets checked, and you get tagged like an animal' },
       { name: 'format-detection', content: 'telephone=no' }
     ],
     link: [
@@ -46,7 +46,10 @@ export default {
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {
     manifest: {
-      lang: 'en'
+      name: 'Covid Checkin',
+      short_name: 'Checkin',
+      lang: 'en',
+      display: 'standalone'
     }
   },
 
