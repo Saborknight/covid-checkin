@@ -50,6 +50,10 @@ export default {
       short_name: 'Checkin',
       lang: 'en',
       display: 'standalone'
+    },
+    workbox: {
+      cachingExtensions: '@/plugins/workbox-sync.js',
+      enabled: true
     }
   },
 

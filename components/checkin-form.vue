@@ -1,5 +1,13 @@
 <template>
-  <b-container fluid>
+  <b-container fluid class="form-container">
+    <div v-if="messageReceived" class="success-message">
+      <h3>Successfully checked in!</h3>
+      <b-row :key="messageReceived.id" class="results">
+        <b-col>{{ messageReceived.firstName }} {{ messageReceived.lastName }}</b-col>
+        <b-col>{{ messageReceived.email }}</b-col>
+        <b-col>{{ messageReceived.phoneNumber }}</b-col>
+      </b-row>
+    </div>
     <b-form-row>
       <b-col sm="3">
         <label for="first-name">First Name</label>
@@ -54,7 +62,7 @@
     </b-form-row>
     <b-row align-h="end" class="p-3">
       <b-col cols="*">
-        <b-button @click="submit">
+        <b-button @click="sendForm">
           Check in
         </b-button>
       </b-col>
@@ -71,7 +79,9 @@ export default {
       firstName: '',
       lastName: '',
       email: '',
-      phoneNumber: ''
+      phoneNumber: '',
+      messageReceived: '',
+      timeoutId: false
     }
   },
   computed: {
@@ -80,16 +90,32 @@ export default {
     }
   },
   methods: {
-    submit () {
+    async sendForm (form) {
       const preparedFormData = {
-        id: Math.floor(Math.random() * (999 - 100) + 100),
+        id: Date.now(),
         firstName: this.firstName,
         lastName: this.lastName,
         email: this.email,
         phoneNumber: this.phoneNumber
       }
-      console.log('submitted', preparedFormData)
-      this.$store.commit('formData/add', preparedFormData)
+
+      try {
+        const message = await this.$axios.$post('https://jsonplaceholder.typicode.com/users', preparedFormData)
+        console.log(message)
+
+        if (this.timeoutId) {
+          this.messageReceived = false
+          clearTimeout(this.timeoutId)
+        }
+
+        this.messageReceived = message
+
+        this.timeoutId = setTimeout(() => {
+          this.messageReceived = false
+        }, 5000)
+      } catch (e) {
+        // console.error(e)
+      }
     },
     ...mapMutations({
       toggle: 'formData/toggle'
