@@ -97,6 +97,12 @@ export default {
     }
   },
   methods: {
+    resetFields () {
+      this.firstName = ''
+      this.lastName = ''
+      this.email = ''
+      this.phoneNumber = ''
+    },
     async sendForm (form) {
       const preparedFormData = {
         id: Date.now(),
@@ -108,7 +114,9 @@ export default {
 
       try {
         const message = await this.$axios.$post('https://jsonplaceholder.typicode.com/users', preparedFormData)
-        console.log(message)
+        if (message) {
+          this.resetFields()
+        }
 
         if (this.timeoutId) {
           this.messageReceived = false
