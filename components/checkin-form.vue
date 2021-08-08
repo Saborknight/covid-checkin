@@ -8,6 +8,12 @@
         <b-col>{{ messageReceived.phoneNumber }}</b-col>
       </b-row>
     </div>
+    <div v-if="errorReceived" class="error-message">
+      <h3>Failed to check in!</h3>
+      <b-row :key="errorReceived.id" class="results">
+        <b-col>{{ errorReceived }}</b-col>
+      </b-row>
+    </div>
     <b-form-row>
       <b-col sm="3">
         <label for="first-name">First Name</label>
@@ -81,7 +87,8 @@ export default {
       email: '',
       phoneNumber: '',
       messageReceived: '',
-      timeoutId: false
+      timeoutId: false,
+      errorReceived: ''
     }
   },
   computed: {
@@ -114,7 +121,7 @@ export default {
           this.messageReceived = false
         }, 5000)
       } catch (e) {
-        // console.error(e)
+        this.errorReceived = e.message
       }
     },
     ...mapMutations({
